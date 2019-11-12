@@ -1,7 +1,7 @@
 # A very simple music recommender system.
 '''
 Created on 11/8
-@author:   GaYoung Park
+@author:   GaYoung Park, Roger Shagawat, 10446882, 10441828
 Pledge:    I pledge my honor that I have abided by the stevens honor system
 
 CS115 - Hw 10
@@ -40,20 +40,18 @@ def getPreferences(userName, userMap):
         print("Your music preferences include:")
         for artist in prefs:
             print(artist)
-        print("Please enter another artist or band that you")
-        print("like, or just press enter")
-        newPref = input("to see your recommendations: ")
+        print("Enter an artist that you like")
+        newPref = input("(Enter to finish): ")
     else:
         prefs = []
         print("I see that you are a new user.")
-        print("Please enter the name of an artist or band")
-        newPref = input("that you like: " )
+        print("Enter an artist that you like")
+        newPref = input("(Enter to finish): " )
         
     while newPref != "":
         prefs.append(newPref.strip().title())
-        print("Please enter another artist or band that you")
-        print("like, or just press enter")
-        newPref = input("to see your recommendations: ")
+        print("Enter an artist that you like ")
+        newPref = input("(Enter to finish): ")
         
     # Always keep the lists in sorted order for ease of
     # comparison
@@ -127,12 +125,30 @@ def saveUserPreferences(userName, prefs, userMap, fileName):
         file.write(toSave)
     file.close()    
 
+def menu():
+    option = input("Enter a letter to choose an option:\
+    \ne - Enter preferences\
+    \nr - Get recommendations\
+    \np - Show most popular artists\
+    \nh - How popular is the most popular\
+    \nm - Which user has the most likes\
+    \nq - Save and quit")
+    swicher = {
+        'e': enter_preferences()
+        'r': get_recommendations()
+        'p': most_popular_artists()
+        'h': how_most_popular()
+        'm': most_likes()
+        'q': save_and_quit()
+    }
+    return switcher(option)
+
 def main():
     ''' The main recommendation function '''
     userMap = loadUsers(PREF_FILE)
     print("Welcome to the music recommender system!")
 
-    userName = input("Please enter your name: ")
+    userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private)")
     print ("Welcome,", userName)
 
     prefs = getPreferences(userName, userMap)
