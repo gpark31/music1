@@ -73,7 +73,8 @@ def findBestUser(currUser, prefs, userMap):
     bestUser = None
     bestScore = -1
     for user in users:
-        score = numMatches(prefs, userMap[user])
+        if not (userMap[user] == userMap[currUser]): 
+            score = numMatches(prefs, userMap[user])
         if score > bestScore and currUser != user:
             bestScore = score
             bestUser = user
@@ -145,7 +146,6 @@ def getNonPrivArtists():
     artists = L
     return artists
 
-
 dic = {}
 def mostPopularArtists():
     '''print the artist that is liked by the most users;
@@ -159,7 +159,8 @@ def mostPopularArtists():
     keys = list(dic)
     values = list(dic.values())
     i = values.index(max(values))
-    return keys[i]
+    print(keys[i])
+    return None
 
 def mostLikes():
     '''print which user has the most likes, print full names
@@ -183,6 +184,7 @@ def mostLikes():
     #prints list of tied for most likes
     for user in userWithMostLikes:
         print(user)
+    return None
 
 def howMostPopular():
     '''print the number of likes the most popular artists
@@ -195,8 +197,18 @@ def howMostPopular():
             dic[artists[x]] = artists.count(artists[x])
     keys = list(dic)
     values = list(dic.values())
-    return max(values)
+    print(max(values))
+    return None
 
+def recommendations(userName, userMap):
+    prefs = userMap[userName]
+    refs = getRecommendations(userName, prefs, userMap)
+    print(refs)
+    return None
+
+def preferences(userName, userMap):
+    prefs = getPreferences(userName, userMap)
+    return None
 
 def menu(userName, userMap):
     option = input("Enter a letter to choose an option:\
@@ -206,19 +218,20 @@ def menu(userName, userMap):
     \nh - How popular is the most popular\
     \nm - Which user has the most likes\
     \nq - Save and quit\n")
-    swicher = {
-        'e' : getPreferences(userName, userMap),
-        'r' : getRecommendations(currUser, prefs, userMap),
+    switcher = {
+        'e' : preferences(userName, userMap),
+        'r' : recommendations(userName, userMap),
         'p' : mostPopularArtists(),
         'h' : howMostPopular(),
         'm' : mostLikes(),
-        'q' : saveUserPreferences(),
+        'q' : "done"
     }
 
     if option in switcher:
-        print(switcher[option])
+        return switcher[option]
     else:
         menu(userName, userMap)
+    return None
 
 def main():
     ''' The main recommendation function '''
@@ -228,12 +241,13 @@ def main():
     userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private)")
     print ("Welcome,", userName)
 
-    getPreferences(userName, userMap)
+    prefs = getPreferences(userName, userMap)
 ##    recs = getRecommendations(userName, prefs, userMap)
 ##    menu(userName, userMap)
 
-    while True:
-        menu(userName, userMap)
+    breaker = None  
+    while breaker == None:
+        breaker = menu(userName, userMap)
     
 ##    # Print the user's recommendations
 ##    if len(recs) == 0:
