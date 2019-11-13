@@ -56,6 +56,7 @@ def getPreferences(userName, userMap):
     # Always keep the lists in sorted order for ease of
     # comparison
     prefs.sort()
+    saveUserPreferences(userName, prefs, userMap, 'musicrecplus.txt')
     return prefs
 
 def getRecommendations(currUser, prefs, userMap):
@@ -125,23 +126,23 @@ def saveUserPreferences(userName, prefs, userMap, fileName):
         file.write(toSave)
     file.close()    
 
-def menu():
+def menu(userName, userMap):
     option = input("Enter a letter to choose an option:\
     \ne - Enter preferences\
     \nr - Get recommendations\
     \np - Show most popular artists\
     \nh - How popular is the most popular\
     \nm - Which user has the most likes\
-    \nq - Save and quit")
+    \nq - Save and quit\n")
     swicher = {
-        'e': enter_preferences()
-        'r': get_recommendations()
-        'p': most_popular_artists()
-        'h': how_most_popular()
-        'm': most_likes()
-        'q': save_and_quit()
+        'e' : getPreferences(userName, userMap),\
+        'r' : getRecommendations(),\
+        'p' : mostPopularArtists(),\
+        'h' : howMostPopular(),\
+        'm' : mostLikes(),\
+        'q' : saveAndQuit(),\
     }
-    return switcher(option)
+    return switcher[option]
 
 def main():
     ''' The main recommendation function '''
@@ -152,7 +153,8 @@ def main():
     print ("Welcome,", userName)
 
     prefs = getPreferences(userName, userMap)
-    recs = getRecommendations(userName, prefs, userMap)
+##    recs = getRecommendations(userName, prefs, userMap)
+    menu(userName, userMap)
 
     # Print the user's recommendations
     if len(recs) == 0:
