@@ -125,32 +125,43 @@ def saveUserPreferences(userName, prefs, userMap, fileName):
     file.close()
     
     
-dic = {}
-dic2 = {}
+dic = {} #all the artists
+dic2 = {} #stores artist name and how many times their name has occurred
 
 def mostPopularArtists():
     '''print the artist that is liked by the most users;
     if tie, print all artists'''
     dic = loadUsers('musicrecplus.txt')
-    dic =  (dic.values())
+    dic = (dic.values())
     for x in dic:
         for y in x:
             dic2[dic] +=1
         
-  
+def get():
+    dic = loadUsers('musicrecplus.txt')
+    users = list(dic.keys())
+    for i in range(len(users)):
+        if "$" in users[i]:
+            users = users[:i] + users[i+1:]
+    return users
 
 def mostLikes():
     '''print which user has the most likes, print full names
     of the users who likes the most artists'''
     dic = loadUsers('musicrecplus.txt')
     dic = dic.keys()
+    userWithNumber = {}
     if dic == []:
         print ("Sorry, no user found.")
+    else:
+        for user in dic:
+            userWithNumber[user] = user.length
+            
 
 def howMostPopular():
     '''print the number of likes the most popular artists
     received'''
-
+    
     print ("Sorry, no artists found.")
 
 
@@ -172,33 +183,33 @@ def menu(userName, userMap):
     }
     return switcher[option]
 
-def main():
-    ''' The main recommendation function '''
-    userMap = loadUsers(PREF_FILE)
-    print("Welcome to the music recommender system!")
-
-    userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private)")
-    print ("Welcome,", userName)
-
-    prefs = getPreferences(userName, userMap)
-##    recs = getRecommendations(userName, prefs, userMap)
-    menu(userName, userMap)
-
-    # Print the user's recommendations
-    if len(recs) == 0:
-        print("I'm sorry but I have no recommendations")
-        print("for you right now.")
-    else:
-        print(userName, "based on the users I currently")
-        print("know about, I believe you might like:")
-        for artist in recs:
-            print(artist)
-
-        print("I hope you enjoy them! I will save your")
-        print("preferred artists and have new")
-        print(" recommendations for you in the future")
-
-    saveUserPreferences(userName, prefs, userMap, PREF_FILE)
-    
-
-if __name__ == "__main__": main()
+##def main():
+##    ''' The main recommendation function '''
+##    userMap = loadUsers(PREF_FILE)
+##    print("Welcome to the music recommender system!")
+##
+##    userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private)")
+##    print ("Welcome,", userName)
+##
+##    prefs = getPreferences(userName, userMap)
+####    recs = getRecommendations(userName, prefs, userMap)
+##    menu(userName, userMap)
+##
+##    # Print the user's recommendations
+##    if len(recs) == 0:
+##        print("I'm sorry but I have no recommendations")
+##        print("for you right now.")
+##    else:
+##        print(userName, "based on the users I currently")
+##        print("know about, I believe you might like:")
+##        for artist in recs:
+##            print(artist)
+##
+##        print("I hope you enjoy them! I will save your")
+##        print("preferred artists and have new")
+##        print(" recommendations for you in the future")
+##
+##    saveUserPreferences(userName, prefs, userMap, PREF_FILE)
+##    
+##
+##if __name__ == "__main__": main()
