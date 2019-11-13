@@ -3,7 +3,6 @@
 Created on 11/8
 @author:   GaYoung Park, Roger Shagawat, 10446882, 10441828
 Pledge:    I pledge my honor that I have abided by the stevens honor system
-
 CS115 - Hw 10
 '''
 PREF_FILE = "musicrec-store.txt"
@@ -27,7 +26,6 @@ def loadUsers(filename):
          
 def getPreferences(userName, userMap):
     ''' Returns a list of the uesr's preferred artists.
-
         If the system already knows about the user,
         it gets the preferences out of the userMap
         dictionary and then asks the user if she has
@@ -124,7 +122,37 @@ def saveUserPreferences(userName, prefs, userMap, fileName):
         toSave = str(user) + ":" + ",".join(userMap[user]) + \
                     "\n"
         file.write(toSave)
-    file.close()    
+    file.close()
+    
+    
+dic = {}
+dic2 = {}
+
+def mostPopularArtists():
+    '''print the artist that is liked by the most users;
+    if tie, print all artists'''
+    dic = loadUsers('musicrecplus.txt')
+    dic =  (dic.values())
+    for x in dic:
+        for y in x:
+            dic2[dic] +=1
+        
+  
+
+def mostLikes():
+    '''print which user has the most likes, print full names
+    of the users who likes the most artists'''
+    dic = loadUsers('musicrecplus.txt')
+    dic = dic.keys()
+    if dic == []:
+        print ("Sorry, no user found.")
+
+def howMostPopular():
+    '''print the number of likes the most popular artists
+    received'''
+
+    print ("Sorry, no artists found.")
+
 
 def menu(userName, userMap):
     option = input("Enter a letter to choose an option:\
@@ -136,11 +164,11 @@ def menu(userName, userMap):
     \nq - Save and quit\n")
     swicher = {
         'e' : getPreferences(userName, userMap),\
-        'r' : getRecommendations(),\
+        'r' : getRecommendations(currUser, prefs, userMap),\
         'p' : mostPopularArtists(),\
         'h' : howMostPopular(),\
         'm' : mostLikes(),\
-        'q' : saveAndQuit(),\
+        'q' : saveUserPreferences(),\
     }
     return switcher[option]
 
