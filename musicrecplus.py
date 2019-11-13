@@ -7,7 +7,7 @@ CS115 - Hw 10
 '''
 PREF_FILE = "musicrec-store.txt"
 
-def loadUsers(filename):
+def loadUsers(fileName):
     ''' Reads in a file of stored users' preferences
         stored in the file 'fileName'.
         Returns a dictionary containing a mapping
@@ -23,10 +23,11 @@ def loadUsers(filename):
         userDict[userName] = bandList
     file.close()
     return userDict
-         
+
 def getPreferences(userName, userMap):
     ''' Returns a list of the uesr's preferred artists.
-        If the system already knows about the user,
+        If the s
+        ystem already knows about the user,
         it gets the preferences out of the userMap
         dictionary and then asks the user if she has
         additional preferences.  If the user is new,
@@ -124,44 +125,68 @@ def saveUserPreferences(userName, prefs, userMap, fileName):
         file.write(toSave)
     file.close()
     
-    
-dic = {} #all the artists
-dic2 = {} #stores artist name and how many times their name has occurred
 
+
+dic = {}
+dic2 = {}
+def getNonPrivUsers():
+    L = []
+    dic = loadUsers('musicrecplus.txt')
+    users = list(dic)
+    artists = list(dic.values())
+    for i in range(len(users)):
+        if "$" in users[i]:
+            users.remove(users[i])
+        else:
+            users = users
+    return users
+
+def getNonPrivArtists():
+    L = []
+    dic = loadUsers('musicrecplus.txt')
+    users = list(dic)
+    artists = list(dic.values())
+    for i in range(len(users)):
+        if "$" in users[i]:
+            users.remove(users[i])
+            artists.remove(artists[i])
+        else:
+            users = users
+            artists = artists
+    for x in range(len(artists)):
+            L += artists[x]
+    artists = L
+    return artists
+
+
+dic = {}
 def mostPopularArtists():
     '''print the artist that is liked by the most users;
     if tie, print all artists'''
-    dic = loadUsers('musicrecplus.txt')
-    dic = (dic.values())
-    for x in dic:
-        for y in x:
-            dic2[dic] +=1
-        
-def get():
-    dic = loadUsers('musicrecplus.txt')
-    users = list(dic.keys())
-    for i in range(len(users)):
-        if "$" in users[i]:
-            users = users[:i] + users[i+1:]
-    return users
-
+    artists = getNonPrivArtists()
+    if artists == []:
+        return "Sorry, no artists found."
+    else:
+        for x in range(len(artists)):
+            dic[artists[x]] = artists.count(artists[x])
+    keys = list(dic)
+    values = list(dic.values())
+    i = values.index(max(values))
+    return keys[i]
+      
 def mostLikes():
     '''print which user has the most likes, print full names
     of the users who likes the most artists'''
     dic = loadUsers('musicrecplus.txt')
     dic = dic.keys()
-    userWithNumber = {}
     if dic == []:
         print ("Sorry, no user found.")
-    else:
-        for user in dic:
-            userWithNumber[user] = user.length
-            
 
 def howMostPopular():
     '''print the number of likes the most popular artists
     received'''
-    
+  
+
     print ("Sorry, no artists found.")
 
 
@@ -183,33 +208,3 @@ def menu(userName, userMap):
     }
     return switcher[option]
 
-##def main():
-##    ''' The main recommendation function '''
-##    userMap = loadUsers(PREF_FILE)
-##    print("Welcome to the music recommender system!")
-##
-##    userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private)")
-##    print ("Welcome,", userName)
-##
-##    prefs = getPreferences(userName, userMap)
-####    recs = getRecommendations(userName, prefs, userMap)
-##    menu(userName, userMap)
-##
-##    # Print the user's recommendations
-##    if len(recs) == 0:
-##        print("I'm sorry but I have no recommendations")
-##        print("for you right now.")
-##    else:
-##        print(userName, "based on the users I currently")
-##        print("know about, I believe you might like:")
-##        for artist in recs:
-##            print(artist)
-##
-##        print("I hope you enjoy them! I will save your")
-##        print("preferred artists and have new")
-##        print(" recommendations for you in the future")
-##
-##    saveUserPreferences(userName, prefs, userMap, PREF_FILE)
-##    
-##
-##if __name__ == "__main__": main()
