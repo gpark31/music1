@@ -158,8 +158,13 @@ def mostPopularArtists():
             dic[artists[x]] = artists.count(artists[x])
     keys = list(dic)
     values = list(dic.values())
-    i = values.index(max(values))
-    print(keys[i])
+    m = max(values)
+    popArtists = []
+    for x in range(len(values)):
+        if m == values[x]:
+            popArtists += [x]
+    for x in range(len(popArtists)):
+        print (keys[popArtists[x]])
     return None
 
 def mostLikes():
@@ -238,7 +243,7 @@ def main():
     userMap = loadUsers(PREF_FILE)
     print("Welcome to the music recommender system!")
 
-    userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private)")
+    userName = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
     print ("Welcome,", userName)
 
     prefs = getPreferences(userName, userMap)
